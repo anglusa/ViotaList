@@ -1,0 +1,39 @@
+npx create-expo-app@latest galloShoppingList --template blank
+
+cd galloShoppingList
+
+
+Instalar o Expo Router
+npx expo install expo-router react-native-safe-area-context react-native-screens expo-linking expo-constants expo-status-bar
+
+
+Instalar o Pacote de Storage
+npx expo install @react-native-async-storage/async-storage
+
+
+Configurar o Router:
+    - package.json: "main": "expo-router/entry",
+    - app.json: "scheme": "galloShoppingList",
+
+
+Adicionar uma pasta src
+
+
+Adicionar na pasta src a pasta assets e copiar as imagens necessárias
+
+
+Adicionar uma pasta components\ItemList e criar os arquivos index e style
+
+
+Adicionar uma pasta app
+    Criar o arquivo index.js
+
+
+Adicionar uma pasta home na pasta app
+    Criar o arquivo style.js
+    Criar o arquivo index.js
+    
+
+npx expo start --localhost --android
+ou
+npm run android
