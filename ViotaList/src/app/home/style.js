@@ -7,8 +7,8 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: '#000000c0',
-        borderBottomLeftRadius: 30,
-        borderBottomRightRadius: 30,
+        borderBottomLeftRadius: 15,
+        borderBottomRightRadius: 15,
     },
     title: {
         fontSize: 26,

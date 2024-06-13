@@ -1,34 +1,146 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   View,
   Text,
   SafeAreaView,
   ImageBackground,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  FlatList,
+  Alert
 } from 'react-native'
 import { Ionicons } from "@expo/vector-icons";
 import { styles } from './style';
-import ItemList from '../../components/ItemList';
+import TaskList from '../../components/ItemList';
+import { StatusBar } from 'expo-status-bar';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Home() {
+  const [textInput, setTextInput] = useState('');
+  const [tasks, setTasks] = useState([]);
+  useEffect(() => {
+    getTasksFromDevice();
+  }, [])
+  useEffect(() => {
+    saveTaskToDevice();
+  }, [tasks])
+
+
+  const saveTaskToDevice = async () => {
+    try {
+      const taskJson = JSON.stringify(tasks);
+      await AsyncStorage.setTask('ViotaList', taskJson);
+    } catch (error) {
+      console.log(`Erro: ${error}`);
+    }
+  }
+
+  const getTasksFromDevice = async () => {
+    try {
+      const tasks = await AsyncStorage.getTask('ViotaList');
+      if (tasks != null) {
+        setTasks(JSON.parse(task));
+      }
+    } catch (error) {
+      console.log(`Erro: ${error}`);
+    }
+  }
+
+  const addTask = () => {
+    //console.log(textInput);
+    if (textInput == '') {
+      Alert.alert(
+        'Ocorreu um problema :(',
+        'Por favor, informe o nome da tarefa');
+    } else {
+      const newTask = {
+        id: Math.random(),
+        name: textInput,
+        bought: false
+      };
+      setTasks([...tasks, newTask]);
+      setTextInput('');
+    }
+  }
+
+  const markTaskDone = taskId => {
+    const newTasks = tasks.map((task) => {
+      if (task.id == taskId) {
+        return { ...task, done: true }
+      }
+      return task;
+    });
+    setItems(newTasks);
+  }
+
+  const unmarkTaskDone = taskId => {
+    const newTasks = tasks.map((task) => {
+      if (task.id == taskId) {
+        return { ...task, done: false }
+      }
+      return task;
+    });
+    setTask(newTasks);
+  }
+
+  const removeTask = taskid => {
+    Alert.alert('Excluir tarefa?',
+      'Confirma a exclusão desta tarefa?',
+      [
+        {
+          text: 'Sim', onPress: () => {
+            const newTasks = tasks.filter(task => task.id != taskId);
+            setTasks(newTasks);
+          }
+        },
+        {
+          text: 'Cancelar', style: 'cancel'
+        }
+      ]
+    )
+  }
+
+  const removeAll = () => {
+    Alert.alert(
+      "Limpar Lista?",
+      "Confirma a exclusão de todas as tarefas de sua lista?",
+      [{
+        text: 'Sim',
+        onPress: () => { setTasks([]) }
+      }, {
+        text: 'Cancelar',
+        style: 'cancel',
+      }]
+    )
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ImageBackground
         source={require('../../assets/background.jpg')}
         resizeMode='cover'
-        style={{ flex: 1, justifyContent: 'flex-start'}}
+        style={{ flex: 1, justifyContent: 'flex-start' }}
       >
         <View style={styles.header}>
-          <Text style={styles.title}>Lista de Produtos</Text>
+          <Text style={styles.title}>Lista de Tarefas</Text>
           <View>
-            <Ionicons name="trash" size={32} color="#fff" />
+            <Ionicons name="trash" size={32} color="#fff" onPress={removeAll} />
           </View>
         </View>
 
-        {/* Lista de Produtos */}
-        <ItemList item={"Café"}></ItemList>
-        <ItemList item={"Chocolate"}></ItemList>
+        {/* Lista de Tarefas */}
+        <FlatList
+          contentContainerStyle={{ padding: 20, paddingBottom: 100, color: '#fff' }}
+          data={tasks}
+          renderTask={({ task }) =>
+            <TaskList
+              task={task}
+              markTask={markTaskDone}
+              unmarkTask={unmarkTaskDone}
+              removeTask={removeTask}
+            />
+          }
+        />
 
         <View style={styles.footer}>
           <View style={styles.inputContainer}>
@@ -37,13 +149,15 @@ export default function Home() {
               fontSize={18}
               placeholderTextColor="#aeaeae"
               placeholder="Digite o nome do produto..."
+              value={textInput}
+              onChangeText={(text) => setTextInput(text)}
             />
           </View>
-          <TouchableOpacity style={styles.iconContainer}>
+          <TouchableOpacity style={styles.iconContainer} onPress={Task}>
             <Ionicons name="add" size={36} color="#fff" />
           </TouchableOpacity>
         </View>
-      </ImageBackground>      
+      </ImageBackground>
     </SafeAreaView>
   )
 }

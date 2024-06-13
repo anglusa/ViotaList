@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-    itemList: {
+    taskList: {
         padding: 15,
         elevation: 12,
         borderRadius: 7,
@@ -13,12 +13,12 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center'
     },
-    itemToBuy: {
+    taskToDo: {
         color: '#fff',
         fontSize: 24,
         textDecorationLine: 'none'
     },
-    itemBought: {
+    taskDone: {
         color: '#fff',
         fontSize: 24,
         textDecorationLine: 'line-through'

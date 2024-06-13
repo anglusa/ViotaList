@@ -1,3 +1,6 @@
+$ git config --global user.name "Fulano de Tal"
+$ git config --global user.email fulanodetal@exemplo.br
+
 npx create-expo-app@latest galloShoppingList --template blank
 
 cd galloShoppingList
@@ -37,3 +40,7 @@ Adicionar uma pasta home na pasta app
 npx expo start --localhost --android
 ou
 npm run android
+
+bought = done
+buy = do
+item = task
