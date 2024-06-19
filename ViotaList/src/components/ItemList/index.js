@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { styles } from "./style";
 
 export default function TaskList({ task, markTask, unmarkTask, removeTask }) {
+  console.log(task);
   return (
     <View style={styles.taskList}>
       <View style={{ flex : 1 }}>
@@ -14,14 +15,14 @@ export default function TaskList({ task, markTask, unmarkTask, removeTask }) {
       {!task?.done ? (
         <TouchableOpacity
           style={styles.actionIcon}
-          onPress={() => markTask(task)}
+          onPress={() => markTask(task.id)}
         >
           <Ionicons name='bag-check-outline' size={24} color='#fff' />
         </TouchableOpacity>
       ) : (
         <TouchableOpacity
           style={styles.actionIcon}
-          onPress={() => unmarkTask(task)}
+          onPress={() => unmarkTask(task.id)}
         >
           <Ionicons name='bag-remove-outline' size={24} color='#fff' />
         </TouchableOpacity>
@@ -29,7 +30,7 @@ export default function TaskList({ task, markTask, unmarkTask, removeTask }) {
 
       <TouchableOpacity
           style={[styles.actionIcon, { backgroundColor: "darkred"}]}
-          onPress={() => removeTask(task)}
+          onPress={() => removeTask(task.id)}
         >
           <Ionicons name='trash-bin-outline' size={24} color='#fff' />
         </TouchableOpacity>

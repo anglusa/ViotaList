@@ -29,7 +29,7 @@ export default function Home() {
   const saveTaskToDevice = async () => {
     try {
       const taskJson = JSON.stringify(tasks);
-      await AsyncStorage.setTask('ViotaList', taskJson);
+      await AsyncStorage.setItem('ViotaList', taskJson);
     } catch (error) {
       console.log(`Erro: ${error}`);
     }
@@ -37,9 +37,9 @@ export default function Home() {
 
   const getTasksFromDevice = async () => {
     try {
-      const tasks = await AsyncStorage.getTask('ViotaList');
-      if (tasks != null) {
-        setTasks(JSON.parse(task));
+      const tasksX = await AsyncStorage.getItem('ViotaList');
+      if (tasksX != null) {
+        setTasks(JSON.parse(tasksX));
       }
     } catch (error) {
       console.log(`Erro: ${error}`);
@@ -56,7 +56,7 @@ export default function Home() {
       const newTask = {
         id: Math.random(),
         name: textInput,
-        bought: false
+        done: false
       };
       setTasks([...tasks, newTask]);
       setTextInput('');
@@ -70,7 +70,7 @@ export default function Home() {
       }
       return task;
     });
-    setItems(newTasks);
+    setTasks(newTasks);
   }
 
   const unmarkTaskDone = taskId => {
@@ -80,10 +80,10 @@ export default function Home() {
       }
       return task;
     });
-    setTask(newTasks);
+    setTasks(newTasks);
   }
 
-  const removeTask = taskid => {
+  const removeTask = taskId => {
     Alert.alert('Excluir tarefa?',
       'Confirma a exclusão desta tarefa?',
       [
@@ -132,7 +132,7 @@ export default function Home() {
         <FlatList
           contentContainerStyle={{ padding: 20, paddingBottom: 100, color: '#fff' }}
           data={tasks}
-          renderTask={({ task }) =>
+          renderItem={({ task }) =>
             <TaskList
               task={task}
               markTask={markTaskDone}
@@ -148,12 +148,12 @@ export default function Home() {
               color="#fff"
               fontSize={18}
               placeholderTextColor="#aeaeae"
-              placeholder="Digite o nome do produto..."
+              placeholder="Digite o nome da tarefa..."
               value={textInput}
               onChangeText={(text) => setTextInput(text)}
             />
           </View>
-          <TouchableOpacity style={styles.iconContainer} onPress={Task}>
+          <TouchableOpacity style={styles.iconContainer} onPress={addTask}>
             <Ionicons name="add" size={36} color="#fff" />
           </TouchableOpacity>
         </View>
