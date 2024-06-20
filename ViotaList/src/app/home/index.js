@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   FlatList,
   Alert
-} from 'react-native'
+} from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
 import { styles } from './style';
 import TaskList from '../../components/ItemList';
@@ -18,13 +18,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function Home() {
   const [textInput, setTextInput] = useState('');
   const [tasks, setTasks] = useState([]);
+
   useEffect(() => {
     getTasksFromDevice();
-  }, [])
+  }, []);
+
   useEffect(() => {
     saveTaskToDevice();
-  }, [tasks])
-
+  }, [tasks]);
 
   const saveTaskToDevice = async () => {
     try {
@@ -33,7 +34,7 @@ export default function Home() {
     } catch (error) {
       console.log(`Erro: ${error}`);
     }
-  }
+  };
 
   const getTasksFromDevice = async () => {
     try {
@@ -44,75 +45,81 @@ export default function Home() {
     } catch (error) {
       console.log(`Erro: ${error}`);
     }
-  }
+  };
 
   const addTask = () => {
-    //console.log(textInput);
-    if (textInput == '') {
+    if (textInput === '') {
       Alert.alert(
         'Ocorreu um problema :(',
-        'Por favor, informe o nome da tarefa');
+        'Por favor, informe o nome da tarefa'
+      );
     } else {
       const newTask = {
-        id: Math.random(),
+        id: Math.random().toString(),
         name: textInput,
         done: false
       };
       setTasks([...tasks, newTask]);
       setTextInput('');
     }
-  }
+  };
 
   const markTaskDone = taskId => {
     const newTasks = tasks.map((task) => {
-      if (task.id == taskId) {
-        return { ...task, done: true }
+      if (task.id === taskId) {
+        return { ...task, done: true };
       }
       return task;
     });
     setTasks(newTasks);
-  }
+  };
 
   const unmarkTaskDone = taskId => {
     const newTasks = tasks.map((task) => {
-      if (task.id == taskId) {
-        return { ...task, done: false }
+      if (task.id === taskId) {
+        return { ...task, done: false };
       }
       return task;
     });
     setTasks(newTasks);
-  }
+  };
 
   const removeTask = taskId => {
-    Alert.alert('Excluir tarefa?',
+    Alert.alert(
+      'Excluir tarefa?',
       'Confirma a exclusão desta tarefa?',
       [
         {
-          text: 'Sim', onPress: () => {
-            const newTasks = tasks.filter(task => task.id != taskId);
+          text: 'Sim',
+          onPress: () => {
+            const newTasks = tasks.filter(task => task.id !== taskId);
             setTasks(newTasks);
           }
         },
         {
-          text: 'Cancelar', style: 'cancel'
+          text: 'Cancelar',
+          style: 'cancel'
         }
       ]
-    )
-  }
+    );
+  };
 
   const removeAll = () => {
     Alert.alert(
       "Limpar Lista?",
       "Confirma a exclusão de todas as tarefas de sua lista?",
-      [{
-        text: 'Sim',
-        onPress: () => { setTasks([]) }
-      }, {
-        text: 'Cancelar',
-        style: 'cancel',
-      }]
-    )
-  }
+      [
+        {
+          text: 'Sim',
+          onPress: () => { setTasks([]); }
+        },
+        {
+          text: 'Cancelar',
+          style: 'cancel'
+        }
+      ]
+    );
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -128,13 +135,13 @@ export default function Home() {
           </View>
         </View>
 
-        {/* Lista de Tarefas */}
         <FlatList
           contentContainerStyle={{ padding: 20, paddingBottom: 100, color: '#fff' }}
           data={tasks}
-          renderItem={({ task }) =>
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) =>
             <TaskList
-              task={task}
+              task={item}
               markTask={markTaskDone}
               unmarkTask={unmarkTaskDone}
               removeTask={removeTask}
@@ -145,8 +152,7 @@ export default function Home() {
         <View style={styles.footer}>
           <View style={styles.inputContainer}>
             <TextInput
-              color="#fff"
-              fontSize={18}
+              style={{ color: "#fff", fontSize: 18 }}
               placeholderTextColor="#aeaeae"
               placeholder="Digite o nome da tarefa..."
               value={textInput}
@@ -159,5 +165,5 @@ export default function Home() {
         </View>
       </ImageBackground>
     </SafeAreaView>
-  )
+  );
 }

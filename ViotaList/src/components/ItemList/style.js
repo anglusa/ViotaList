@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center'
     },
     taskToDo: {
-        color: '#',
+        color: 'white',
         fontSize: 24,
         textDecorationLine: 'none'
     },

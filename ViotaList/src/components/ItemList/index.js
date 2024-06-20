@@ -4,10 +4,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { styles } from "./style";
 
 export default function TaskList({ task, markTask, unmarkTask, removeTask }) {
-  console.log(task);
   return (
     <View style={styles.taskList}>
-      <View style={{ flex : 1 }}>
+      <View style={{ flex: 1 }}>
         <Text style={task?.done ? styles.taskDone : styles.taskToDo}>
           {task?.name}
         </Text>
@@ -17,23 +16,23 @@ export default function TaskList({ task, markTask, unmarkTask, removeTask }) {
           style={styles.actionIcon}
           onPress={() => markTask(task.id)}
         >
-          <Ionicons name='bag-check-outline' size={24} color='#fff' />
+          <Ionicons name='checkmark-circle-outline' size={24} color='#fff' />
         </TouchableOpacity>
       ) : (
         <TouchableOpacity
           style={styles.actionIcon}
           onPress={() => unmarkTask(task.id)}
         >
-          <Ionicons name='bag-remove-outline' size={24} color='#fff' />
+          <Ionicons name='remove-circle-outline' size={24} color='#fff' />
         </TouchableOpacity>
-      ) }
+      )}
 
       <TouchableOpacity
-          style={[styles.actionIcon, { backgroundColor: "darkred"}]}
-          onPress={() => removeTask(task.id)}
-        >
-          <Ionicons name='trash-bin-outline' size={24} color='#fff' />
-        </TouchableOpacity>
+        style={[styles.actionIcon, { backgroundColor: "darkred" }]}
+        onPress={() => removeTask(task.id)}
+      >
+        <Ionicons name='trash-bin-outline' size={24} color='#fff' />
+      </TouchableOpacity>
     </View>
-  )
+  );
 }
